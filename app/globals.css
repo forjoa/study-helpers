@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,8 +16,27 @@
   }
 }
 
+* {
+  font-family: "Roboto Mono", serif;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input[type='submit'] {
+  cursor: pointer;
+  color: var(--background);
+  background: var(--foreground);
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+textarea, pre {
+  border: dashed 1px var(--foreground);
+  background-color: var(--background);
+  outline: none;
+  font-family: "Roboto Mono", serif;
 }
