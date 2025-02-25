@@ -119,7 +119,7 @@ function parseSlideXML(xmlContent: string): Slide {
 
 // xml to markdown
 function slideToMarkdown(slide: Slide, slideNumber: number): string {
-  let md = `## Diapositiva ${slideNumber}\n\n`
+  let md = `### Diapositiva ${slideNumber}\n\n`
   const titleShape = slide.shapes.find(
     (s) =>
       s.placeholderType.toLowerCase() === 'title' ||
