@@ -35,7 +35,7 @@ export default function MarkdownPreview() {
     return (
         <div className="p-4 mt-20">
             <h2 className="mb-4">Markdown preview</h2>
-            <pre className="w-full h-96 p-2 border rounded overflow-auto">
+            <pre className="w-full h-[800px] p-2 border rounded overflow-x-auto">
                 {markdown}
             </pre>
             <div className="mt-4 flex justify-end">
