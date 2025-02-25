@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import PizZip from 'pizzip'
 import { DOMParser } from 'xmldom'
 
+// types
+type Shape = {
+  placeholderType: string
+  shapeName: string
+  text: string
+}
+
+type Slide = { shapes: Shape[] }
+
 // memory storage (it doesn't persist)
 const markdownStore = new Map()
 
@@ -47,11 +56,25 @@ export async function POST(req: NextRequest) {
   }
 }
 
+// endpoint to get markdown information from preview page
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url)
+  const id = searchParams.get('id')
+
+  if (!id || !markdownStore.has(id)) {
+    return NextResponse.json({ error: 'Markdown not found' }, { status: 404 })
+  }
+
+  return NextResponse.json({ markdown: markdownStore.get(id) })
+}
+
+// function to get the slide number
 function extractSlideNumber(slidePath: string) {
   const match = slidePath.match(/slide(\d+)\.xml$/)
   return match ? parseInt(match[1], 10) : 0
 }
 
+// raw ppt or pptx slide to md
 function parseSlideXML(xmlContent: string): Slide {
   const parser = new DOMParser()
   const doc = parser.parseFromString(xmlContent, 'application/xml')
@@ -61,21 +84,21 @@ function parseSlideXML(xmlContent: string): Slide {
   for (let i = 0; i < spNodes.length; i++) {
     const shapeNode = spNodes[i]
 
-    // Detecta el tipo de placeholder mediante el nodo <p:ph>
+    // detect the content type by node <p:ph>
     const phNodes = shapeNode.getElementsByTagName('p:ph')
     let placeholderType = ''
     if (phNodes.length > 0) {
       placeholderType = phNodes[0].getAttribute('type') || ''
     }
 
-    // Extrae el nombre de la forma (para identificar títulos o subtítulos)
+    // extract the shape name (for identifying titles or subtitles)
     const cNvPrNodes = shapeNode.getElementsByTagName('p:cNvPr')
     let shapeName = ''
     if (cNvPrNodes.length > 0) {
       shapeName = cNvPrNodes[0].getAttribute('name') || ''
     }
 
-    // Extrae el contenido textual de la forma (buscando nodos <a:t> dentro de <p:txBody>)
+    // extract textual content from the shape (searching nodes <a:t> inside <p:txBody>)
     let textContent = ''
     const txBodyNodes = shapeNode.getElementsByTagName('p:txBody')
     if (txBodyNodes.length > 0) {
@@ -94,6 +117,7 @@ function parseSlideXML(xmlContent: string): Slide {
   return slide
 }
 
+// xml to markdown
 function slideToMarkdown(slide: Slide, slideNumber: number): string {
   let md = `## Diapositiva ${slideNumber}\n\n`
   const titleShape = slide.shapes.find(
@@ -106,7 +130,7 @@ function slideToMarkdown(slide: Slide, slideNumber: number): string {
   }
 
   slide.shapes.forEach((shape) => {
-    // Si ya se usó como título, se omite
+    // if it is a title, skip it
     if (shape.placeholderType.toLowerCase() === 'title') return
 
     if (
@@ -120,25 +144,4 @@ function slideToMarkdown(slide: Slide, slideNumber: number): string {
     }
   })
   return md
-}
-
-// Tipos para mayor claridad
-type Shape = {
-  placeholderType: string
-  shapeName: string
-  text: string
-}
-
-type Slide = { shapes: Shape[] }
-
-// endpoint to get markdown information from preview page
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url)
-  const id = searchParams.get('id')
-
-  if (!id || !markdownStore.has(id)) {
-    return NextResponse.json({ error: 'Markdown not found' }, { status: 404 })
-  }
-
-  return NextResponse.json({ markdown: markdownStore.get(id) })
 }
