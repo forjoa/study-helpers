@@ -12,7 +12,7 @@ export default function PptMarkdown() {
 
     const formData = new FormData(e.currentTarget)
 
-    const res = await fetch('/api/transform', {
+    const res = await fetch('/api/transform-ppt', {
       method: 'POST',
       body: formData,
     })

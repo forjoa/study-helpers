@@ -12,7 +12,7 @@ export default function MarkdownPreview() {
     useEffect(() => {
         if (id) {
             // get method to get the markdown
-            fetch(`/api/transform?id=${id}`)
+            fetch(`/api/transform-ppt?id=${id}`)
                 .then((res) => res.json())
                 .then((data) => setMarkdown(data.markdown || 'No content available'))
                 .catch(() => setMarkdown('Error loading Markdown'))
