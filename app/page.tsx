@@ -1,3 +1,4 @@
+import PdfMarkdown from '@/components/pages/pdf-markdown'
 import PptMarkdown from '@/components/pages/ppt-markdown'
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
         this project just for myself and to help me to study.
       </p>
       <PptMarkdown />
+      <PdfMarkdown />
     </div>
   )
 }
