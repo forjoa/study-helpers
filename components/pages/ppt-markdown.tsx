@@ -1,33 +1,45 @@
-"use client";
+'use client'
 
-import { Upload } from "lucide-react";
-import { useState } from "react";
+import { Upload } from 'lucide-react'
+import { useState } from 'react'
 
 export default function PptMarkdown() {
-    const [loading, setLoading] = useState(false);
-    const [loaded, setLoaded] = useState(false);
+    const [loading, setLoading] = useState(false)
+    const [loaded, setLoaded] = useState(false)
 
     const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setLoading(true);
+        e.preventDefault()
+        setLoading(true)
 
-        const formData = new FormData(e.currentTarget);
-        const res = await fetch("/api/transform", { method: "POST", body: formData });
+        const formData = new FormData(e.currentTarget)
+        const res = await fetch('/api/transform', {
+            method: 'POST',
+            body: formData,
+        })
 
         if (res.redirected) {
-            window.location.href = res.url;
+            window.location.href = res.url
         } else {
-            alert("Error uploading file");
+            alert('Error uploading file')
         }
 
-        setLoading(false);
-    };
+        setLoading(false)
+    }
 
     return (
-        <form onSubmit={handleUpload} className="mt-4 flex flex-col gap-2 w-full" encType="multipart/form-data">
+        <form
+            onSubmit={handleUpload}
+            className="mt-4 flex flex-col gap-2 w-full"
+            encType="multipart/form-data"
+        >
             <h2 className="font-bold">PowerPoint to Markdown</h2>
-            <p>Put the PowerPoint file on the input below and we will return to you the Markdown file.</p>
-            {loaded ? (<p>Uploaded</p>) : (
+            <p>
+                Put the PowerPoint file on the input below and we will return to you the
+                Markdown file.
+            </p>
+            {loaded ? (
+                <p>Uploaded</p>
+            ) : (
                 <div className="relative">
                     <input
                         type="file"
@@ -48,9 +60,9 @@ export default function PptMarkdown() {
             )}
             <div className="w-full flex justify-end">
                 <button type="submit" disabled={loading}>
-                    {loading ? "Uploading..." : "Upload"}
+                    {loading ? 'Uploading...' : 'Upload'}
                 </button>
             </div>
         </form>
-    );
+    )
 }
