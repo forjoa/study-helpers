@@ -32,9 +32,9 @@ export default function PdfMarkdown() {
       className="mt-4 flex flex-col gap-2 w-full"
       encType="multipart/form-data"
     >
-      <h2 className="font-bold">PowerPoint to Markdown</h2>
+      <h2 className="font-bold">PDF to Markdown</h2>
       <p>
-        Put the PowerPoint file on the input below and we will return to you the
+        Send the PDF file on the input below and we will return to you the
         Markdown file.
       </p>
 
