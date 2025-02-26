@@ -5,19 +5,22 @@ import { useEffect, useState } from 'react'
 export default function MarkdownPreview() {
     const [markdown, setMarkdown] = useState('Loading...')
     let id: string | null = ''
+    let type: string | null = ''
     if (typeof window !== 'undefined') {
+        type = new URLSearchParams(window.location.search).get('type')
         id = new URLSearchParams(window.location.search).get('id')
     }
 
     useEffect(() => {
         if (id) {
+            // know type file
             // get method to get the markdown
-            fetch(`/api/transform-ppt?id=${id}`)
+            fetch(`/api/transform-${type}?id=${id}`)
                 .then((res) => res.json())
                 .then((data) => setMarkdown(data.markdown || 'No content available'))
                 .catch(() => setMarkdown('Error loading Markdown'))
         }
-    }, [id])
+    }, [id, type])
 
     const downloadMarkdown = () => {
         if (typeof window === 'undefined') return
