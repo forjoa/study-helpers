@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     markdownStore.set(id, markdown)
 
     // redirect to preview page with id
-    return NextResponse.redirect(new URL(`/preview?id=${id}`, req.url))
+    return NextResponse.redirect(new URL(`/preview?type=ppt&id=${id}`, req.url))
   } catch (error) {
     return NextResponse.json(
       { error: `Internal server error: ${error}` },
