@@ -18,6 +18,27 @@
 
 * {
   font-family: "Roboto Mono", serif;
+  scrollbar-width: thin;
+  scrollbar-color: var(--foreground) var(--background);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--foreground);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(23, 23, 23, 0.8);
 }
 
 body {
